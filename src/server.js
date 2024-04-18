@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors"
 import userRouter from "./routes/users.js"
 import fileRouter from "./routes/files.js"
 import fileUpload from "express-fileupload";
@@ -11,6 +12,7 @@ const app = express()
 
 app.use(express.json())
 app.use(fileUpload())
+app.use(cors())
 app.use(express.static(path.join(process.cwd(),"src","uploads")))
 
 app.use(userRouter)

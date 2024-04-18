@@ -109,9 +109,57 @@ const DOWNLOAD = (req,res,next) => {
     }
 }
 
+const FILE_DELETE = (req,res,next) =>{
+    try {
+        const { fileId } = req.params
+
+        let files = fs.readFileSync(path.join(process.cwd(),"src","db","files.json"),"utf-8")
+        files = JSON.parse(files) || []
+
+       files =  files.filter(file => file.id != fileId)
+
+       fs.writeFileSync(path.join(process.cwd(),"src","db","files.json"),JSON.stringify(files,null,4))
+
+       res.status(200).json({
+        status:200,
+        message: "File o'chirildi",
+       })
+    } catch (error) {
+        return next(new InternalServerError(500,error.message))
+    }
+}
+
+const UPDATE_FILE = (req,res,next) => {
+    try {
+        const { fileId } = req.params
+        const { newTitle } = req.body
+
+        let files = fs.readFileSync(path.join(process.cwd(),"src","db","files.json"),"utf-8")
+        files = JSON.parse(files) || []
+
+        let file = files.find(file => file.id == fileId)
+
+        if(file){
+            file.title = newTitle
+        }
+
+        fs.writeFileSync(path.join(process.cwd(),"src","db","files.json"),JSON.stringify(files,null,4))
+
+        res.status(202).json({
+            status:202,
+            message: "File O'zgartirildi"
+        })
+
+    } catch (error) {
+        return next(new InternalServerError(500,error.message))
+    }
+}
+
 export default {
     POST_FILES,
     FILE_GET,
     GET,
-    DOWNLOAD
+    DOWNLOAD,
+    FILE_DELETE,
+    UPDATE_FILE
 }
