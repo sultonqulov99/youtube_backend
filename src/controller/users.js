@@ -87,9 +87,26 @@ const GET = (req,res,next) => {
         return next(new InternalServerError(500,error.message))
     }
 }
-
+const VERFY = (req,res,next) => {
+    try {
+        const {token} = req.params
+        let user = JWT.verify(token,"shaftoli")
+        if(user){
+            return res.status(200).json({
+                message:"Token valid"
+            })
+        }
+        return res.statu(400).json({
+            message:"Token invalid"
+        })
+        
+    } catch (error) {
+        return next(new InternalServerError(500,error.message))
+    }
+}
 export default {
     REGISTER,
     LOGIN,
-    GET
+    GET,
+    VERFY
 }
