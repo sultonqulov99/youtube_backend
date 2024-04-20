@@ -71,7 +71,15 @@ const GET = (req,res,next) => {
         users = JSON.parse(users) || []
         if(fileName){
             let file = files.filter(file => file.title.toLowerCase().includes(fileName.toLowerCase()))
-
+            file = file.map(f => {
+                f.user = users.find(user => user.id == f.userId)
+                f.viewLink = f.file
+                f.downloadLink = f.file 
+    
+                delete f.user.password 
+    
+                return f
+            })
             return res.status(200).json({
                 status:200,
                 message:"ok",
