@@ -7,7 +7,7 @@ const {Router}  = express
 const router = Router()
 
 router.get("/api/users",userController.GET)
-router.get("/api/user/verfy",userController.VERFY)
+router.get("/api/user/verfy/:token",userController.VERFY)
 
 router.post("/api/register",userMiddleware,userController.REGISTER)
 router.post("/api/login",userMiddleware,userController.LOGIN)
