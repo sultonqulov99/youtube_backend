@@ -96,12 +96,10 @@ const VERFY = (req,res,next) => {
                 message:"Token valid"
             })
         }
-        return res.status(400).json({
-            message:"Token invalid"
-        })
         
     } catch (error) {
-        return next(new InternalServerError(500,error.message))
+        
+        return next(new InternalServerError(400,error.message))
     }
 }
 export default {
