@@ -11,6 +11,12 @@ const REGISTER = (req,res,next) => {
         
         let users = fs.readFileSync(path.join(process.cwd(),"src","db","users.json"),"utf-8")
         users = JSON.parse(users) || []
+
+        let user = users.find(user => user.userName == userName)
+
+        if(user){
+            return next(new AuthorizationError(401,"User allaqachon bor"))
+        }
         
         let fileName = new Date().getTime() + "." + profilImg.name 
      
@@ -28,6 +34,7 @@ const REGISTER = (req,res,next) => {
             console.log(error)
         })
 
+        delete newUser.password
         return res.status(201).json({
             status:201,
             message:"Malumot qo'shildi",
@@ -99,7 +106,7 @@ const VERFY = (req,res,next) => {
         
     } catch (error) {
         
-        return next(new InternalServerError(400,error.message))
+        return next(new AuthorizationError(400,error.message))
     }
 }
 export default {

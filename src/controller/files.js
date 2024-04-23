@@ -1,4 +1,4 @@
-import { InternalServerError } from "../utils/error.js"
+import { InternalServerError, AuthorizationError } from "../utils/error.js"
 import fs from "fs"
 import path from "path"
 
@@ -10,6 +10,15 @@ const POST_FILES = (req,res,next) => {
 
         let files = fs.readFileSync(path.join(process.cwd(),"src","db","files.json"),"utf-8")
         files = JSON.parse(files) || []
+
+        let users = fs.readFileSync(path.join(process.cwd(),"src","db","users.json"),"utf-8")
+        users = JSON.parse(users) || []
+
+        let user = users.find(user => user.id == userId)
+
+        if(!user){
+            return next(new AuthorizationError(401,"Bunday foydalanuvchi topilmadi, file qo'sholmaysan"))
+        }
 
         let fileName = new Date().getTime() + "." + file.name 
 
