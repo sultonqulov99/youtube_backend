@@ -96,7 +96,7 @@ const VERFY = (req,res,next) => {
                 message:"Token valid"
             })
         }
-        return res.statu(400).json({
+        return res.status(400).json({
             message:"Token invalid"
         })
         
