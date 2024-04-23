@@ -17,4 +17,4 @@ router.delete("/api/delete-file/:fileId",controllerFiles.FILE_DELETE)
    
 router.put("/api/update-file/:fileId",controllerFiles.UPDATE_FILE)
 
-export default router
+export default router 
